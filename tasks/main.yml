@@ -1,12 +1,12 @@
 ---
 - name: Ensure git is installed
-  package:
+  ansible.builtin.package:
     name: "{{ gitclone_git_package_name }}"
     state: present
 
 - block:
   - name: Clone repositories to the desired directories
-    git:
+    ansible.builtin.git:
       repo: "{{ item.repo_url }}"
       dest: "{{ item.repo_local_path }}"
       version: "{{ item.repo_version | default('HEAD') }}"
@@ -19,7 +19,7 @@
     when: item is defined
 
   - name: Ensure directories permissions are correct
-    file:
+    ansible.builtin.file:
       path: "{{ item.repo_local_path }}"
       state: directory
       mode: "{{ item.dir_mode | default(omit) }}"
